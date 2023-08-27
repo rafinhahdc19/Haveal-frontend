@@ -7,6 +7,15 @@ import axios from 'axios'
 import Cookies from 'js-cookie';
 import { Spinner } from '@chakra-ui/react'
 import Router from 'next/router'
+const handleSignIn = async () => {
+    const result = await signIn('google');
+    if (result.error) {
+      console.error(result.error);
+    } else {
+      Cookies.set('jwt', result.jwt, { expires: 30 });
+      Router.push('/perfil');
+    }
+  };
 const Login = () => {
     if(Cookies.get('jwt')){
         Router.push("/")
@@ -95,9 +104,7 @@ const Login = () => {
                     {/*login com o google*/}
                     <div className='justify-center flex  '>
                         <div className='text-black  '>
-                            <button as="button" onClick={() => signIn('google', {
-                                redirect: false
-                            })} className='p-4  hover:bg-gray-200 duration-300 ease-in-out  border-2 boder-black rounded flex items-center'><Image src={"/logogoogle.avif"} className="mr-3" width="30" height="30" alt="Logo Google"></Image><span className='text-lg'>Login with Google</span></button>
+                            <button as="button" onClick={() => handleSignIn()} className='p-4  hover:bg-gray-200 duration-300 ease-in-out  border-2 boder-black rounded flex items-center'><Image src={"/logogoogle.avif"} className="mr-3" width="30" height="30" alt="Logo Google"></Image><span className='text-lg'>Login with Google</span></button>
                         </div>
                     </div>
                     <p className='text-black text-center m-4'>Não tem uma conta? Então <Link className=' text-sky-700 ' href={"/register"}>Registre-se</Link></p>

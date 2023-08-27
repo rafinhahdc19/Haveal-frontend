@@ -21,9 +21,7 @@ export default NextAuth({
                     "nome": user.name,
                     "email": user.email
                 });
-                console.log(response.data)
                 if (response.data.user[0].jwt && response.data.user[0].nome && response.data.user[0].email) {
-                    console.log("ta aqui2")
                     user = {
                         id: response.data.user[0].id,
                         name: response.data.user[0].nome,
@@ -33,7 +31,6 @@ export default NextAuth({
                     Cookies.set('jwt', response.data.jwt, { expires: 30 });
                     return user;
                 } else {
-                    console.log("ta aqui3")
                     return null;
                 }
                 
