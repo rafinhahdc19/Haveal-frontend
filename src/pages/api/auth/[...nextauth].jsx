@@ -16,21 +16,24 @@ export default NextAuth({
     secret: process.env.SECRET,
     callbacks: {
         async signIn({ user, account, profile, email, credentials }) {
+            console.log("ta aqui")
                 const response = await axios.post('https://haveal-backend.vercel.app/login/provider', {
                     "nome": user.name,
                     "email": user.email
                 });
-                
-                if (response.data.jwt && response.data.user[0].nome && response.data.user[0].email) {
+                console.log(response.data)
+                if (response.data.user[0].jwt && response.data.user[0].nome && response.data.user[0].email) {
+                    console.log("ta aqui2")
                     user = {
                         id: response.data.user[0].id,
                         name: response.data.user[0].nome,
                         email: response.data.user[0].email,
-                        jwt: response.data.jwt
+                        jwt: response.data.user[0].jwt
                     };
                     Cookies.set('jwt', response.data.jwt, { expires: 30 });
                     return user;
                 } else {
+                    console.log("ta aqui3")
                     return null;
                 }
                 
