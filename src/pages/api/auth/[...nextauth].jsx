@@ -16,7 +16,6 @@ export default NextAuth({
     secret: process.env.SECRET,
     callbacks: {
         async signIn({ user, account, profile, email, credentials }) {
-            console.log("ta aqui")
                 const response = await axios.post('https://haveal-backend.vercel.app/login/provider', {
                     "nome": user.name,
                     "email": user.email

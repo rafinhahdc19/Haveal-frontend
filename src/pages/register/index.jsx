@@ -16,10 +16,12 @@ const Login = () => {
     const [ susse, setsusse ] = useState({ msg: "" })
     const [ loading, setloading ] = useState(false)
     const handleSignIn = async () => {
-        const result = await signIn('google');
+        const { data: result } = await signIn('google');
+        console.log(result);
+        
         if (result.error) {
           console.error(result.error);
-        } else {
+        } else if (result.jwt) {
           Cookies.set('jwt', result.jwt, { expires: 30 });
           Router.push('/perfil');
         }
