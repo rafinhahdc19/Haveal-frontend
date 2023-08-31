@@ -56,7 +56,7 @@ const Index = () => {
   const slugs = id
 
   useEffect(() => {
-    const item = axios.post("https://haveal-backend.vercel.app/product", {
+    const item = axios.post(process.env.NEXT_PUBLIC_URL+"/product", {
       slug:slugs
     }).then(function (response) {
       setdataar(response.data)

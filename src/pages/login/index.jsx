@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { Input, Button, ButtonGroup, Divider } from '@chakra-ui/react'
 import { signIn } from 'next-auth/react'
@@ -7,16 +7,32 @@ import axios from 'axios'
 import Cookies from 'js-cookie';
 import { Spinner } from '@chakra-ui/react'
 import Router from 'next/router'
-const handleSignIn = async () => {
-    const result = await signIn('google');
-    if (result.error) {
-      console.error(result.error);
-    } else {
-      Cookies.set('jwt', result.jwt, { expires: 30 });
-      Router.push('/perfil');
-    }
-  };
+import { useSession } from 'next-auth/react'
+
 const Login = () => {
+    const { data: session } = useSession()
+    useEffect(() => {
+        const getJwt = async (name, email) => {
+            const response = await axios.post(process.env.NEXT_PUBLIC_URL+'/login/provider', {
+                "nome": name,
+                "email": email
+            });
+            if (response.data.user[0].jwt && response.data.user[0].nome && response.data.user[0].email) {
+                Cookies.set('jwt', response.data.user[0].jwt, { expires: 12 });
+                Router.push("/perfil")
+            }
+        }
+        if(session && session.user){
+            getJwt(session.user.name, session.user.email)
+        }
+    }, [session])
+    
+    
+    const handleSignIn = async () => {
+    const result = await signIn('google').then((callback) => {
+    })
+    
+  };
     if(Cookies.get('jwt')){
         Router.push("/")
     }
@@ -24,10 +40,11 @@ const Login = () => {
     const [ errouser, seterrouser ] = useState({ msg: "" })
     const [ susse, setsusse ] = useState({ msg: "" })
     const [ loading, setloading ] = useState(false)
+
     const onSubmit = async (e) => {
         e.preventDefault();
         setloading(true)
-        const response = await axios.post('https://haveal-backend.vercel.app/login',{
+        const response = await axios.post(process.env.NEXT_PUBLIC_URL+'/login',{
             "email": userInfo.email,
             "senha": userInfo.senha
         }).then(function (response) {

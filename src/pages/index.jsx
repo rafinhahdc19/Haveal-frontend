@@ -12,7 +12,7 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://haveal-backend.vercel.app/products");
+        const response = await axios.get(process.env.NEXT_PUBLIC_URL+"/products");
         if (response.data && response.data.length > 0) {
           setItems(response.data);
         }

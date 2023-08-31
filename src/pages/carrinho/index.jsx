@@ -124,7 +124,7 @@ const Index = () => {
 
     const getItemcarsda = async () => {
       if(itenCar != []){
-        const itensfromdb = await axios.post("https://haveal-backend.vercel.app/getitemcar", {
+        const itensfromdb = await axios.post(process.env.NEXT_PUBLIC_URL+"/getitemcar", {
             slugs:itenCar 
         }).then(function (response){
           setdataar(response.data.itens)

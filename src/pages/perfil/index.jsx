@@ -16,9 +16,15 @@ import {
   import { useRef } from "react"
 import AuthVerify from "@/components/verifyer"
 import Router from "next/router"
+import { signOut } from "next-auth/react"
+import Cookies from "js-cookie"
 const Perfil = () => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const btnRef = useRef()
+    const logOut = () => {
+        signOut()
+        Cookies.remove('jwt')
+    }
     function tabs(){
         return(
             <>
@@ -30,6 +36,9 @@ const Perfil = () => {
                     <Link href="/perfil/compras">
                         <Button className="w-full my-2" variant='outline'  colorScheme='blue'>Suporte</Button>
                     </Link>
+                    
+                    <Button onClick={() => logOut()} className="w-full my-4 mb-auto absolute bottom-0" variant='outline'  colorScheme='blue'>Log-out</Button>
+                    
                 </div>
             </>
         )

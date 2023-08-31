@@ -77,7 +77,7 @@ const Navbar = () => {
                 }`}
               >
                 <ul className="h-screen md:h-auto items-center justify-center md:flex ">
-                  <li className="pb-4 text-base text-black py-2 px-6 text-center  border-b-2 md:border-b-0  hover:bg-gray-200 rounded-sm   border-black   md:hover:bg-transparent">
+                  <li className="pb-3 text-base text-black py-3 px-6 text-center  border-b-2 md:border-b-0  hover:bg-gray-200 rounded-sm   border-black   md:hover:bg-transparent">
                     <Link className='flex' href="/perfil" onClick={() => setNavbar(!navbar)}>
                         
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
@@ -89,7 +89,7 @@ const Navbar = () => {
 
                     </Link>
                   </li>
-                  <li className="pb-4 text-base text-black py-2 px-6 text-center  border-b-2 md:border-b-0  hover:bg-gray-200 rounded-sm   border-black   md:hover:bg-transparent">
+                  <li className="pb-3 text-base text-black py-3 px-6 text-center  border-b-2 md:border-b-0  hover:bg-gray-200 rounded-sm   border-black   md:hover:bg-transparent">
                     <Link className='flex' href="/carrinho" onClick={() => setNavbar(!navbar)}>
                     
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">

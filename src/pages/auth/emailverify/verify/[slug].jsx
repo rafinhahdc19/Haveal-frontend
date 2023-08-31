@@ -10,7 +10,7 @@ const EmailVerify = () => {
 
   const verifyUser = async (slug) => {
     try {
-      const response = await axios.post('https://haveal-backend.vercel.app/auth/verify/user', {
+      const response = await axios.post(process.env.NEXT_PUBLIC_URL+'/auth/verify/user', {
         slug: slug,
       });
       setloading(false);

@@ -9,7 +9,7 @@ const AuthVerify = ({ children, routerFunction }) => {
     useEffect(() => {
         const req = async (token) => {
             try {
-                const response = await axios.get('https://haveal-backend.vercel.app/getuser/', {
+                const response = await axios.get(process.env.NEXT_PUBLIC_URL+'/getuser/', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                         'Content-Type': 'application/json',
