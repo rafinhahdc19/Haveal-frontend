@@ -33,7 +33,7 @@ const Login = () => {
             }
             seterrouser({msg: ""})
             setsusse({msg: "Sucesso"})
-            Router.push("/")
+            Router.push("/perfil")
         }).catch(function (error) {
             setloading(false)
             if (error.response) {

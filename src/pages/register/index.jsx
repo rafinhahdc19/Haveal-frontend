@@ -33,7 +33,7 @@ const Login = () => {
                 }else if(response.data.user[0].jwt){
                     Cookies.set('jwt', response.data.user[0].jwt, { expires: 12 });
                 }
-                Router.push("/")
+                Router.push("/perfil")
             }
             else{
                 setsusse({msg: "Sucesso, te enviamos um email para você verificar a sua conta"})
