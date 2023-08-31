@@ -7,25 +7,8 @@ import axios from 'axios'
 import Cookies from 'js-cookie';
 import { Spinner } from '@chakra-ui/react'
 import Router from 'next/router'
-import { useSession } from 'next-auth/react'
 
 const Login = () => {
-    const { data: session } = useSession()
-    useEffect(() => {
-        const getJwt = async (name, email) => {
-            const response = await axios.post(process.env.NEXT_PUBLIC_URL+'/login/provider', {
-                "nome": name,
-                "email": email
-            });
-            if (response.data.user[0].jwt && response.data.user[0].nome && response.data.user[0].email) {
-                Cookies.set('jwt', response.data.user[0].jwt, { expires: 12 });
-                Router.push("/perfil")
-            }
-        }
-        if(session && session.user){
-            getJwt(session.user.name, session.user.email)
-        }
-    }, [session])
     if(Cookies.get('jwt')){
         Router.push("/")
     }
@@ -33,13 +16,6 @@ const Login = () => {
     const [ errouser, seterrouser ] = useState({ msg: "" })
     const [ susse, setsusse ] = useState({ msg: "" })
     const [ loading, setloading ] = useState(false)
-    
-    
-    const handleSignIn = async () => {
-        const result = await signIn('google');
-        
-
-      };
     const onSubmit = async (e) => {
         e.preventDefault();
         setloading(true)
@@ -132,11 +108,6 @@ const Login = () => {
                         <div className='border-b border-gray-500 w-full'></div>
                     </div>
                     {/*login com o google*/}
-                    <div className='justify-center flex  '>
-                        <div className='text-black  '>
-                            <button as="button" onClick={() => handleSignIn()} className='p-4  hover:bg-gray-200 duration-300 ease-in-out  border-2 boder-black rounded flex items-center'><Image src={"/logogoogle.avif"} className="mr-3" width="30" height="30" alt="Logo Google"></Image><span className='text-lg'>Login with Google</span></button>
-                        </div>
-                    </div>
                     <p className='text-black text-center m-4'>já tem uma conta? Então faça o <Link className=' text-sky-700 ' href={"/login"}>login</Link></p>
                 </div>
             </div>
