@@ -107,13 +107,15 @@ const Index = () => {
 
 
 
-  const formatCurrency = (value) => {
+  const formatCurrency = (valueInCents) => {
+    const valueInReal = valueInCents / 100; 
+
     const numberFormat = new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: 'BRL',
     });
   
-    return numberFormat.format(value);
+    return numberFormat.format(valueInReal);
   };
   
   
@@ -280,9 +282,9 @@ const Index = () => {
                 </div>
                 
                 <div className='px-4 md:pt-4 md:my-0 my-2'>
-                  <Button onClick={() => Router.push(`https://api.whatsapp.com/send?phone=77988689141&text=https://wolf-conceito-web-site.vercel.app/list/${listTo64}`)} className="md:p-0 p-4 w-full" variant="solid" colorScheme="blue" isDisabled={dataArrays3.length === 0} >
+                  <Button onClick={() => Router.push("/buy")} className="md:p-0 p-4 w-full" variant="solid" colorScheme="blue" isDisabled={dataArrays3.length === 0} >
                     
-                      <span className='flex break-words md:text-sm text-base'>Finalizar compra pelo whatsapp</span>
+                      <span className='flex break-words md:text-sm text-base'>Finalizar compra</span>
                     
                   </Button>
                 </div>

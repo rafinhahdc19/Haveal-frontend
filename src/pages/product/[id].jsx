@@ -25,21 +25,16 @@ const Index = () => {
   const id = router.query.id;
   
   const updateLocalStorage = (slug) => {
-    // Verifica se já existe uma lista de carros no LocalStorage
     const existingCars = JSON.parse(localStorage.getItem('user_car')) || [];
 
-    // Verifica se o slug do carro já está na lista
     const existingCar = existingCars.find((car) => car.slug === slug);
 
     if (existingCar) {
-      // Se o carro já está na lista, incrementa a quantidade
       existingCar.quantity = 1;
     } else {
-      // Caso contrário, adiciona um novo elemento à lista
       existingCars.push({ slug, quantity: 1 });
     }
 
-    // Atualiza o LocalStorage com a lista atualizada
     localStorage.setItem('user_car', JSON.stringify(existingCars));
     
   };
@@ -70,14 +65,18 @@ const Index = () => {
     quantity: 1,
   }];
   const listTo64 = btoa(encodeURIComponent(JSON.stringify(itemToBuy)))
+  const buyHere = (slug) => {
+    updateLocalStorage(slug)
+    router.push("/carrinho")
+  }
   return (
     <>
 
       
         <header className='fixed w-full z-10 top-0'><Navbar></Navbar></header>
         {itemToShow && (
-        <main className='md:mt-[9rem] lg:max-w-6xl drop-shadow-sm rounded mt-[8rem] ml-auto mr-auto'>
-          <div className='bg-white rounded w-full p-10 md:px-14 px-2 text-black'>
+        <main className='md:mt-[9rem] lg:max-w-6xl drop-shadow-sm rounded mt-[7rem] ml-auto mr-auto'>
+          <div className='bg-white rounded w-full p-4 md:px-14 px-2 text-black'>
           
             <div className='md:flex'>
             <div className='md:w-[40%] rounded '>
@@ -87,7 +86,7 @@ const Index = () => {
             src={itemToShow.imgurl}
             alt='Foto do Produto'
             borderRadius='lg'
-            className='rounded'
+            className='rounded mr-auto ml-auto'
             />
             </div> 
             <div className='md:w-[60%] justify-center md:pl-10  px-2 mr-auto '>
@@ -121,11 +120,11 @@ const Index = () => {
                     </button>
                   </li>
                   <li>
-                  <Link href={"/list/"+listTo64}>
-                    <button className='w-full bg-blue-100 hover:bg-blue-50 text-blue-700 duration-200 font-medium mr-auto ml-auto ease-in-out rounded-md p-2'>
-                      Comprar agora por Whatsapp
+                  
+                    <button onClick={() => buyHere(itemToShow.slug)} className='w-full bg-blue-100 hover:bg-blue-50 text-blue-700 duration-200 font-medium mr-auto ml-auto ease-in-out rounded-md p-2'>
+                      Comprar agora
                     </button>
-                    </Link>
+                    
                   </li>
               </ul>
               

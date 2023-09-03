@@ -1,10 +1,12 @@
-const FormatCurrency = (value) => {
-    const numberFormat = new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL',
-    });
-  
-    return numberFormat.format(value);
-  };
+const FormatCurrency = (valueInCents) => {
+  const valueInReal = valueInCents / 100; 
 
-export default FormatCurrency
+  const numberFormat = new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  });
+
+  return numberFormat.format(valueInReal);
+};
+
+export default FormatCurrency;

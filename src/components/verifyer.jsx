@@ -35,7 +35,7 @@ const AuthVerify = ({ children, routerFunction }) => {
             routerFunction();
         }
     }, []);
-
+    
     return isVerified ? children : null;
 };
 

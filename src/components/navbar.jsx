@@ -26,7 +26,7 @@ const Navbar = () => {
                     </div>
                 <div className='w-[100%] mt-auto px-4 mb-auto md:ml-6 ml-2'>
                 <form  onSubmit={(e) => { e.preventDefault(); if (search !== "") window.location.href = "/search/" + search; }}>
-                    <div className='flex border rounded-md border-gray-300 p-1 pr-1 pl-3'>
+                    <div className='flex border rounded-md border-gray-300 p-1 pl-3'>
                     
                         <Input type={"text"} onChange={(e) => setsearch(e.target.value)} className='w-full ' variant='unstyled' placeholder='Buscar' color={'black'} />
                         <Link type='submit' href={search !== "" ? "/search/" + search : "#"} style={{ pointerEvents: search !== "" ? "auto" : "none" }}>

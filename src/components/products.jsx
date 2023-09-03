@@ -64,7 +64,7 @@ const Product = ({ title, desc, image, value, link, slug}) => {
         </Link>
       </CardBody>
       <Divider />
-      <CardFooter>
+      <CardFooter className=' mr-auto ml-auto'>
         <ButtonGroup spacing='2'>
           <Button className='focus:bg-green-500' _focus={"bg-green-500"} variant="solid" colorScheme="blue" onClick={() => updateLocalStorage(slug)}>
             Adicionar ao carrinho
