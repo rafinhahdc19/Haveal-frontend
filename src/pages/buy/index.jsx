@@ -265,8 +265,8 @@ const MyPaymentForm = () => {
                     
                   dataArrays3.map((item) => {
                     return(
-                      <div className='flex w-full'>
-                      <div key={item.slug} className='flex p-4 w-full border rounded m-2 border-gray-200'>
+                      <div key={item.slug} className='flex w-full'>
+                      <div  className='flex p-4 w-full border rounded m-2 border-gray-200'>
                         <div className='rounded '>
                           <Image 
                           className='rounded'            
