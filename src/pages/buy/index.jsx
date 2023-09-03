@@ -332,7 +332,7 @@ const MyPaymentForm = () => {
               Numero de contato*
             </p>
             <InputGroup>
-              <InputLeftAddon children='+55' />
+              <InputLeftAddon>+55</InputLeftAddon>
               <Input onInput={(e) => {
                       e.target.value = e.target.value.slice(0, 14);
                     }} value={contato} onChange={(e) => setcontato(e.target.value)} type='number' placeholder='Numero de telefone' required />
