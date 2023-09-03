@@ -39,13 +39,15 @@ const Index = () => {
     
   };
 
-  const formatCurrency = (value) => {
+  const formatCurrency = (valueInCents) => {
+    const valueInReal = valueInCents / 100; 
+
     const numberFormat = new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: 'BRL',
     });
   
-    return numberFormat.format(value);
+    return numberFormat.format(valueInReal);
   };
   const [dataArrays, setdataar] = useState([])
   const slugs = id
