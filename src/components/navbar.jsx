@@ -30,13 +30,13 @@ const Navbar = () => {
                             <Image src={"/logo 3.png"} className={'md:w-[70px] object-contain md:h-[70px] w-[65px] h-[65px]'} alt='logo' width={'70'} height={'70'} />
                         </Link>
                     </div>
-                <div className='w-[100%] mt-auto  mb-auto md:ml-6 ml-2'>
+                <div className='w-[100%] mt-auto px-4 mb-auto md:ml-6 ml-2'>
                 <form  onSubmit={(e) => routerFunc(e) }>
-                    <div className='flex border rounded-md border-gray-300 p-1 pl-3'>
+                    <div className='flex border justify-between rounded-md border-gray-300 p-1 pl-3'>
                     
                         <Input type={"text"} onChange={(e) => setsearch(e.target.value)} className='w-full ' variant='unstyled' placeholder='Buscar' color={'black'} />
-                        <Link type='submit' href={search !== "" ? "/search/" + search : ""} style={{ pointerEvents: search !== "" ? "auto" : "none" }}>
-                          <Button padding={4} colorScheme="blue" isDisabled={search === ""}>
+                        <Link className='mr-auto' type='submit' href={search !== "" ? "/search/" + search : ""} style={{ pointerEvents: search !== "" ? "auto" : "none" }}>
+                          <Button className='mr-auto' padding={4} colorScheme="blue" isDisabled={search === ""}>
                             
                               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
