@@ -59,7 +59,7 @@ const Perfil = () => {
     }
     
     const routerFunc = () => {
-        Router.push('/login')
+        Router.push('/login?page=perfil')
     }
     useEffect(() => {
         if (!fim) {

@@ -8,10 +8,31 @@ import Cookies from 'js-cookie';
 import { Spinner } from '@chakra-ui/react'
 import Router from 'next/router'
 import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
 
 const Login = () => {
+    const router = useRouter();
+    const { page } = router.query;
+    const [red, setred] = useState("")
+    useEffect(() => {
+        if(page == "buy"){
+            setred("?page=buy")
+        }else if(page == "perfil"){
+            setred("?page=perfil")
+        }else{
+            setred("?page=perfil")
+        }
+    })
+    
     if(Cookies.get('jwt')){
-        Router.push("/")
+        if(page == "buy"){
+            Router.push("/buy")
+        }else if(page == "perfil"){
+            Router.push("/perfl")
+        }else{
+            Router.push("/")
+        }
+        
     }
     const [ userInfo, setuserinfo ] = useState({ email: "", senha: "" })
     const [ errouser, seterrouser ] = useState({ msg: "" })
@@ -33,7 +54,13 @@ const Login = () => {
             }
             seterrouser({msg: ""})
             setsusse({msg: "Sucesso"})
-            Router.push("/perfil")
+            if(page == "buy"){
+                router.push("/buy")
+            }else if(page == "perfil"){
+                router.push("/perfil")
+            }else{
+                router.push("/perfil")
+            }
         }).catch(function (error) {
             setloading(false)
             if (error.response) {
@@ -96,7 +123,7 @@ const Login = () => {
                         <div className='border-b border-gray-500 w-full'></div>
                     </div>
                     {/*login com o google*/}
-                    <p className='text-black text-center m-4'>Não tem uma conta? Então <Link className=' text-sky-700 ' href={"/register"}>Registre-se</Link></p>
+                    <p className='text-black text-center m-4'>Não tem uma conta? Então <Link className=' text-sky-700 ' href={"/register"+red}>Registre-se</Link></p>
                 </div>
             </div>
         </main>

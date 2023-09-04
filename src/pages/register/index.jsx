@@ -7,10 +7,32 @@ import axios from 'axios'
 import Cookies from 'js-cookie';
 import { Spinner } from '@chakra-ui/react'
 import Router from 'next/router'
+import { useRouter } from 'next/router'
 
 const Login = () => {
+    const router = useRouter();
+    const { page } = router.query;
+    const [red, setred] = useState("")
+    useEffect(() => {
+        if(page == "buy"){
+            setred("?page=buy")
+        }else if(page == "perfil"){
+            setred("?page=perfil")
+        }else{
+            setred("?page=perfil")
+        }
+    })
+    
+    
     if(Cookies.get('jwt')){
-        Router.push("/")
+        if(page == "buy"){
+            Router.push("/buy")
+        }else if(page == "perfil"){
+            Router.push("/perfl")
+        }else{
+            Router.push("/perfl")
+        }
+        
     }
     const [ userInfo, setuserinfo ] = useState({ nome: "", email: "", senha: "" })
     const [ errouser, seterrouser ] = useState({ msg: "" })
@@ -33,7 +55,13 @@ const Login = () => {
                 }else if(response.data.user[0].jwt){
                     Cookies.set('jwt', response.data.user[0].jwt, { expires: 12 });
                 }
-                Router.push("/perfil")
+                if(page == "buy"){
+                    Router.push("/buy")
+                }else if(page == "perfil"){
+                    Router.push("/perfil")
+                }else{
+                    Router.push("/")
+                }
             }
             else{
                 setsusse({msg: "Sucesso, te enviamos um email para você verificar a sua conta"})
@@ -108,7 +136,7 @@ const Login = () => {
                         <div className='border-b border-gray-500 w-full'></div>
                     </div>
                     {/*login com o google*/}
-                    <p className='text-black text-center m-4'>já tem uma conta? Então faça o <Link className=' text-sky-700 ' href={"/login"}>login</Link></p>
+                    <p className='text-black text-center m-4'>já tem uma conta? Então faça o <Link className=' text-sky-700 ' href={"/login"+red}>login</Link></p>
                 </div>
             </div>
         </main>
