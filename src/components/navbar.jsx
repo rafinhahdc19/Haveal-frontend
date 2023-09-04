@@ -30,7 +30,7 @@ const Navbar = () => {
                             <Image src={"/logo 3.png"} className={'md:w-[70px] object-contain md:h-[70px] w-[65px] h-[65px]'} alt='logo' width={'70'} height={'70'} />
                         </Link>
                     </div>
-                <div className='w-[100%] mt-auto px-4 mb-auto md:ml-6 ml-2'>
+                <div className='w-[100%] mt-auto  mb-auto md:ml-6 ml-2'>
                 <form  onSubmit={(e) => routerFunc(e) }>
                     <div className='flex border rounded-md border-gray-300 p-1 pl-3'>
                     
