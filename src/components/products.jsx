@@ -58,11 +58,11 @@ const Product = ({ title, desc, image, value, link, slug}) => {
 
         </Link>
       </CardBody>
-      <div className='md:visible md:h-auto h-0 invisible mr-auto ml-auto'>
-      <Divider />
+      <div className='md:visible md:h-auto md:w-full h-0 invisible mr-auto ml-auto'>
+      <Divider className='w-full' />
       <CardFooter >
-        <ButtonGroup  spacing='2'>
-          <Button className='focus:bg-green-500' _focus={"bg-green-500"} variant="solid" colorScheme="blue" onClick={() => updateLocalStorage(slug)}>
+        <ButtonGroup className='flex w-full' spacing='2'>
+          <Button className='focus:bg-green-500 mr-auto ml-auto' _focus={"bg-green-500"} variant="solid" colorScheme="blue" onClick={() => updateLocalStorage(slug)}>
             Adicionar ao carrinho
           </Button>
         </ButtonGroup>
