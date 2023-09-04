@@ -6,20 +6,28 @@ import Product from '@/components/products'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { Skeleton, SkeletonCircle, SkeletonText, Box, Spinner, Button  } from '@chakra-ui/react'
+import Router from 'next/router'
 
 export default function Home() {
   const [items, setItems] = useState([]);
   const [pag, setPag] = useState(0);
   const [fim, setfim] = useState(false)
   const [notfound, setnotfound] = useState(false)
+  const [ search2, setsearch2 ] = useState('')
   const itemsPerPage = 24;
-
-  const fetchData = async (offset, limit) => {
+  const router = useRouter();
+  const search =
+  typeof router.query.search === 'object'
+    ? router.query.search.join(' ') 
+    : router.query.search || '';
+  
+  const fetchData = async (offset, limit, search) => {
     try {
       const response = await axios.get(process.env.NEXT_PUBLIC_URL + "/products", {
         params: {
           limit,
           offset,
+          search,
         },
       });
       return response.data;
@@ -32,15 +40,19 @@ export default function Home() {
   const loadMoreItems = async () => {
     setPag(pag + 1);
   };
-
   useEffect(() => {
+    console.log(search)
+    if(search == ''){
+        Router.push('/')
+    }
+    console.log(search2,"o um:", search)
     
+    if (!fim || search2 != search) {
     
-    if (!fim) {
       const offset = pag * itemsPerPage;
       const limit = itemsPerPage;
   
-      fetchData(offset, limit)
+      fetchData(offset, limit, search)
         .then((data) => {
           if (data.length > 0) {
             setnotfound(false)
@@ -49,15 +61,25 @@ export default function Home() {
   
             if (
               JSON.stringify(lastItems) === JSON.stringify(newItems)
+              
             ) { 
+            } else if(search2 != search){
+                
+                setItems(newItems);
+                setsearch2(search)
+                
             } else {
+              
               setItems([...items, ...newItems]);
+              setsearch2(search)
             }
           }else if(items.length <= 0){
+            setsearch2(search)
             setnotfound(true)
             setfim(true);
           } else {
             setnotfound(true)
+            setsearch2(search)
             setfim(true);
           }
   
@@ -66,7 +88,7 @@ export default function Home() {
           }
         });
     }
-  }, [pag]);
+  }, [pag, search]);
 
   return (
     <>

@@ -8,6 +8,7 @@ import {
     DrawerContent,
     DrawerCloseButton,
     Button,
+    Spinner,
     Input
   } from '@chakra-ui/react'
   import Link from "next/link"
@@ -19,9 +20,38 @@ import Router from "next/router"
 import Cookies from "js-cookie"
 import axios from "axios"
 import { Text } from "@chakra-ui/react"
+import FormatCurrency from "@/functions/moneyconvert"
 const Perfil = () => {
     const token = Cookies.get('jwt');
+
+    const [items, setItems] = useState([]);
+    const [pag, setPag] = useState(0);
+    const [fim, setfim] = useState(false)
+    const [notfound, setnotfound] = useState(false)
+    const itemsPerPage = 24;
     const [user, setuser] = useState({})
+    const fetchData = async (offset, limit) => {
+        try {
+          const response = await axios.get(process.env.NEXT_PUBLIC_URL + "/getshops", {
+            params: {
+              limit,
+              offset,
+            },
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+          });
+          return response.data;
+        } catch (error) {
+          console.error("Erro ao buscar dados: ", error);
+          return [];
+        }
+      };
+      const loadMoreItems = async () => {
+        setPag(pag + 1);
+      };
+    
     let verified = false
     const logOut = () => {
         Cookies.remove('jwt')
@@ -31,11 +61,43 @@ const Perfil = () => {
     const routerFunc = () => {
         Router.push('/login')
     }
-    
+    useEffect(() => {
+        if (!fim) {
+          const offset = pag * itemsPerPage;
+          const limit = itemsPerPage;
+      
+          fetchData(offset, limit)
+            .then((data) => {
+            const datas = data.itemsS
+              if (datas.length > 0) {
+                setnotfound(false)
+                const lastItems = items.slice(-datas.length);
+                const newItems = datas.slice();
+      
+                if (
+                  JSON.stringify(lastItems) === JSON.stringify(newItems)
+                ) { 
+                } else {
+                  setItems([...items, ...newItems]);
+                }
+              }else if(items.length <= 0){
+                setnotfound(true)
+                setfim(true);
+              } else {
+                setnotfound(true)
+                setfim(true);
+              }
+      
+              if (datas.length < itemsPerPage) {
+                setfim(true);
+              }
+            });
+        }
+      }, [pag]);
     useEffect(() => {
         if(!verified){
             const getuser = async () => {
-                const response = await axios.get(process.env.NEXT_PUBLIC_URL+'/getuser/', {
+                const response = await axios.get(process.env.NEXT_PUBLIC_URL+'/getuser', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                         'Content-Type': 'application/json',
@@ -106,23 +168,52 @@ const Perfil = () => {
                     </div>
                 </div>
                 </div>
-                <div className=" bg-white border rounded p-4 text-black border-gray-300">
+                {notfound ? (
+                    <p className="text-center text-black font-medium text-2xl p-4">Nenhum item encontrado</p>
+                    ) : items.length <= 0 ? (
+                    <li className='flex m-4 justify-center'>
+                        <Spinner className='ml-auto mr-auto' color='blue.600' size='xl' />
+                    </li>
+                    ) : (
                     <div>
-                        <h1 className="">
-                            Compra de um item(s)
-                        </h1>
-                        <div className='bg-gray-50 w-full my-2 md:p-2 p-1 md:mr-0 rounded'>
-                            <Text textDecoration="none" color='blue.600' fontSize='xl'>
-                                R$ 200,00
-                            </Text>
+                        {items.map((item) => (
+                            <div key={item.id} className=" bg-white border rounded p-4 text-black border-gray-300">
+                            <div>
+                                <div className=" my-2 justify-between md:flex"> 
+                                    <h1 className="">
+                                        Compra de {item.itens.length}  item(s)
+                                    </h1>
+                                    <h1 className="md:my-0 my-2">
+                                        id: {item.id}
+                                    </h1>
+                                </div>
+                                <div className=" my-2 justify-between md:flex"> 
+                                    <h1 className="">
+                                        Status de pagamento: {item.status == "1" ? (
+                                            <span>pago</span>
+                                        ):(
+                                            <span>Falhou</span>
+                                        )}
+                                    </h1>
+                                </div>
+                                <div className=" my-2 justify-between md:flex"> 
+                                    <h1 className="">
+                                        Status: 
+                                    </h1>
+                                </div>
+                                <div className='bg-gray-50 w-full my-2 md:p-2 p-1 md:mr-0 rounded'>
+                                    <Text textDecoration="none" color='blue.600' fontSize='xl'>
+                                        {FormatCurrency(item.value)}
+                                    </Text>
+                                </div>
+                            </div>
                         </div>
-                        <div className="w-full">
-                            <Button className="w-full" colorScheme='teal' variant='outline'>
-                                Mostrar
-                            </Button>
+                        ))}
+                        <div className="text-center my-4">
+                        <Button colorScheme='teal' variant='outline' onClick={loadMoreItems}>Carregar Mais</Button>
                         </div>
                     </div>
-                </div>
+                    )}
             </main>
             </AuthVerify>
         </>

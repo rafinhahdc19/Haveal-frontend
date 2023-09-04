@@ -5,11 +5,17 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import { Input } from '@chakra-ui/react'
 import { Button, ButtonGroup } from '@chakra-ui/react'
+import  Router  from 'next/router'
 
 const Navbar = () => {
-    const [navbar, setNavbar] = useState(false);
-    const [usedCar, setusedCar] = useState("block")
-    const [search, setsearch] = useState("")
+  const [navbar, setNavbar] = useState(false);
+  const [usedCar, setusedCar] = useState("block");
+  const [search, setsearch] = useState("");
+  
+    const routerFunc = (e) => {
+      e.preventDefault();
+      Router.push('/search/'+search)
+    }
     return (
       <div>
         <nav className="w-full bg-[#FFF] drop-shadow-lg fixed top-0 left-0 right-0 z-10">
@@ -25,11 +31,11 @@ const Navbar = () => {
                         </Link>
                     </div>
                 <div className='w-[100%] mt-auto px-4 mb-auto md:ml-6 ml-2'>
-                <form  onSubmit={(e) => { e.preventDefault(); if (search !== "") window.location.href = "/search/" + search; }}>
+                <form  onSubmit={(e) => routerFunc(e) }>
                     <div className='flex border rounded-md border-gray-300 p-1 pl-3'>
                     
                         <Input type={"text"} onChange={(e) => setsearch(e.target.value)} className='w-full ' variant='unstyled' placeholder='Buscar' color={'black'} />
-                        <Link type='submit' href={search !== "" ? "/search/" + search : "#"} style={{ pointerEvents: search !== "" ? "auto" : "none" }}>
+                        <Link type='submit' href={search !== "" ? "/search/" + search : ""} style={{ pointerEvents: search !== "" ? "auto" : "none" }}>
                           <Button padding={4} colorScheme="blue" isDisabled={search === ""}>
                             
                               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">

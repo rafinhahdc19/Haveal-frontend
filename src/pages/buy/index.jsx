@@ -9,7 +9,6 @@ import Image from 'next/image';
 import AuthVerify from '@/components/verifyer';
 import Router from 'next/router';
 import Cookies from 'js-cookie';
-
 const MyPaymentForm = () => {
   const [clientSecret, setClientSecret] = useState('');
   const [error, setError] = useState('');
@@ -171,8 +170,7 @@ const MyPaymentForm = () => {
       });
       if (error) {
         setError(error.message);
-      } else {
-        
+      }else if(paymentIntent.status === 'succeeded'){
         const confirmStatus = await axios.post(process.env.NEXT_PUBLIC_URL+"/confirmpay",{
           paymentid:id
         },{
@@ -181,11 +179,17 @@ const MyPaymentForm = () => {
               'Content-Type': 'application/json',
             },
         }).then(function (data){
+          console.log(paymentIntent)
           Router.push("/perfil")
         }).catch(function (error){
-          alert("o pagamento não pode ser verificado, entre em contato se for preciso")
+          alert("o pagamento não pode ser verificado ou não foi efetuado, entre em contato se for preciso")
         })
-  
+      }else if(paymentIntent.status === "processing"){
+        setError("Seu pagamento está sendo processado.")
+      }else if(paymentIntent.status === "requires_payment_method"){
+        setError("Seu pagamento não foi bem-sucedido, tente novamente.")
+      } else {
+        setError("Algo deu errado.")
       } 
   
       
@@ -231,7 +235,7 @@ const MyPaymentForm = () => {
           setStartedpay(true)
         })
         .catch(function (error) {
-          console.log(error);
+          setError(error.response.data.message);
         });
 
   
@@ -464,7 +468,7 @@ const MyPaymentForm = () => {
                      {"Valor: "+FormatCurrency(resultadoFinal)}
                 </Text>
               </div>
-            <Button type='submit' className='mr-auto ml-auto' colorScheme='teal' variant='outline'>
+            <Button type='submit' className='mr-auto ml-auto mb-2' colorScheme='teal' variant='outline'>
               Comprar
             </Button>
             {error && <div>{error}</div>}

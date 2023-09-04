@@ -7,21 +7,16 @@ import { Card, CardHeader, CardBody, CardFooter, Stack, Heading, Divider, Button
 
 const Product = ({ title, desc, image, value, link, slug}) => {
     const updateLocalStorage = (slug) => {
-        // Verifica se já existe uma lista de carros no LocalStorage
         const existingCars = JSON.parse(localStorage.getItem('user_car')) || [];
     
-        // Verifica se o slug do carro já está na lista
         const existingCar = existingCars.find((car) => car.slug === slug);
     
         if (existingCar) {
-          // Se o carro já está na lista, incrementa a quantidade
           existingCar.quantity = 1;
         } else {
-          // Caso contrário, adiciona um novo elemento à lista
           existingCars.push({ slug, quantity: 1 });
         }
     
-        // Atualiza o LocalStorage com a lista atualizada
         localStorage.setItem('user_car', JSON.stringify(existingCars));
         
       };
@@ -42,7 +37,7 @@ const Product = ({ title, desc, image, value, link, slug}) => {
           />
 
           
-            <div className='relative py-3 h-full'>
+            <div className='relative md:py-3 h-full'>
               <div className='mb-auto'>
                <Box style={{ wordBreak: 'break-word' }}>
                 <Text fontSize='xl' textDecor="none" noOfLines={6}>
@@ -63,15 +58,18 @@ const Product = ({ title, desc, image, value, link, slug}) => {
 
         </Link>
       </CardBody>
+      <div className='md:visible md:h-auto h-0 invisible mr-auto ml-auto'>
       <Divider />
-      <CardFooter className=' mr-auto ml-auto'>
-        <ButtonGroup spacing='2'>
+      <CardFooter >
+        <ButtonGroup  spacing='2'>
           <Button className='focus:bg-green-500' _focus={"bg-green-500"} variant="solid" colorScheme="blue" onClick={() => updateLocalStorage(slug)}>
             Adicionar ao carrinho
           </Button>
         </ButtonGroup>
       </CardFooter>
+      </div>
     </Card>
+    
     </>
   )
 }
