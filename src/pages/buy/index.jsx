@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { Input } from '@chakra-ui/react'
-import { Button, ButtonGroup, InputLeftAddon, InputGroup, Divider, Box, Loading, Text } from '@chakra-ui/react'
+import { Button, ButtonGroup, InputLeftAddon, InputGroup, Divider, Box, Loading, Text, Spinner } from '@chakra-ui/react'
 import Navbar from '@/components/navbar';
 import FormatCurrency from '@/functions/moneyconvert';
 import Image from 'next/image';
@@ -20,6 +20,7 @@ const MyPaymentForm = () => {
   const [dataArrays2, setdataar2] = useState([])
   const [dataArrays3, setdataar3] = useState([])
   const [Startedpay, setStartedpay] = useState(false)
+  const [ loading, setloading ] = useState(false)
   const calcularResultado = () => {
     let total = 0;
 
@@ -179,26 +180,32 @@ const MyPaymentForm = () => {
               'Content-Type': 'application/json',
             },
         }).then(function (data){
-          console.log(paymentIntent)
+          setloading(false)
           Router.push("/perfil")
         }).catch(function (error){
+          setloading(false)
           alert("o pagamento não pode ser verificado ou não foi efetuado, entre em contato se for preciso")
         })
       }else if(paymentIntent.status === "processing"){
+        setloading(false)
         setError("Seu pagamento está sendo processado.")
       }else if(paymentIntent.status === "requires_payment_method"){
+        setloading(false)
         setError("Seu pagamento não foi bem-sucedido, tente novamente.")
       } else {
+        setloading(false)
         setError("Algo deu errado.")
       } 
   
       
     } catch (error) {
+      setloading(false)
       setError(error.message);
     }
   }
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setloading(true)
     if (!isCardComplete) {
       alert('Por favor, preencha as informações do cartão.');
       return;
@@ -468,8 +475,12 @@ const MyPaymentForm = () => {
                      {"Valor: "+FormatCurrency(resultadoFinal)}
                 </Text>
               </div>
-            <Button type='submit' className='mr-auto ml-auto mb-2' colorScheme='teal' variant='outline'>
-              Comprar
+            <Button disabled={loading} type='submit' className='mr-auto ml-auto mb-2' colorScheme='teal' variant='outline'>
+              {loading ? (
+                <Spinner size='md' />
+                ) : (
+                "Comprar"
+              )}
             </Button>
             {error && <div>{error}</div>}
           </div>

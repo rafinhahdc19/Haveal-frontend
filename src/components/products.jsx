@@ -26,7 +26,7 @@ const Product = ({ title, desc, image, value, link, slug}) => {
     <>
       <Card className='mr-auto ml-auto' maxW='sm'>
       <CardBody >
-        <Link href={link} className="no-underline  " >
+        <Link href={link} >
           <Image
             width={"480"}
             height={"480"}
@@ -37,7 +37,7 @@ const Product = ({ title, desc, image, value, link, slug}) => {
           />
 
           
-            <div className='relative md:py-3 h-full'>
+            <div className='relative md:py-4 h-full'>
               <div className='mb-auto'>
                <Box style={{ wordBreak: 'break-word' }}>
                 <Text fontSize='xl' textDecor="none" noOfLines={6}>

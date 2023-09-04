@@ -28,7 +28,7 @@ const Login = () => {
         if(page == "buy"){
             Router.push("/buy")
         }else if(page == "perfil"){
-            Router.push("/perfl")
+            Router.push("/perfil")
         }else{
             Router.push("/")
         }

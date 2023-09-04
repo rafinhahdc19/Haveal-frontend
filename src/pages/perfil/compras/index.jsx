@@ -190,9 +190,9 @@ const Perfil = () => {
                                 <div className=" my-2 justify-between md:flex"> 
                                     <h1 className="">
                                         Status de pagamento: {item.status == "1" ? (
-                                            <span>pago</span>
+                                            <span className=" text-green-700 ">Pago</span>
                                         ):(
-                                            <span>Falhou</span>
+                                            <span className=" text-red-700 ">Falhou</span>
                                         )}
                                     </h1>
                                 </div>
@@ -201,10 +201,15 @@ const Perfil = () => {
                                         Status: 
                                     </h1>
                                 </div>
-                                <div className='bg-gray-50 w-full my-2 md:p-2 p-1 md:mr-0 rounded'>
+                                <div className='bg-gray-100 w-full my-2 md:p-2 p-1 md:mr-0 rounded'>
                                     <Text textDecoration="none" color='blue.600' fontSize='xl'>
                                         {FormatCurrency(item.value)}
                                     </Text>
+                                </div>
+                                <div className=" my-2 justify-between md:flex"> 
+                                    <Button onClick={() => Router.push("/order/"+item.slug)} className="w-full" colorScheme='teal' variant='outline'>
+                                        Mais
+                                    </Button>
                                 </div>
                             </div>
                         </div>
