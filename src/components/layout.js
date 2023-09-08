@@ -20,7 +20,7 @@ export default function Layout({ children }) {
         <title>Haveal</title>
         <meta
           name="description"
-          content="undefined"
+          content="A loja onde você encontrará tudo o que precisa."
         />
       </Head>
       <GlobalStyle />
