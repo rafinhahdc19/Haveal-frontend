@@ -33,7 +33,7 @@ const Perfil = () => {
     const [user, setuser] = useState({})
     const fetchData = async (offset, limit) => {
         try {
-          const response = await axios.get(process.env.NEXT_PUBLIC_URL + "/getshops", {
+          const response = await axios.get(process.env.NEXT_PUBLIC_URL + "/getshopsbyadm", {
             params: {
               limit,
               offset,
@@ -187,7 +187,7 @@ const Perfil = () => {
                 </div>
                 </div>
                 {notfound ? (
-                    <p className="text-center text-black font-medium text-2xl p-4">Nenhuma compra encontrada</p>
+                    <p className="text-center text-black font-medium text-2xl p-4">Nenhum item encontrado</p>
                     ) : items.length <= 0 ? (
                     <li className='flex m-4 justify-center'>
                         <Spinner className='ml-auto mr-auto' color='blue.600' size='xl' />
@@ -216,7 +216,25 @@ const Perfil = () => {
                                 </div>
                                 <div className=" my-2 justify-between md:flex"> 
                                     <h1 className="">
-                                        Status: 
+                                    Status: {item.status == "0" ? (
+                                    <span className="text-red-700">Falhou</span>
+                                    ) : (
+                                    item.statusInterno == "1" ? (
+                                        <span className="text-green-700">Validado</span>
+                                    ) : (
+                                        <span className="text-yellow-700">Validando</span>
+                                    )
+                                    )}
+                                    </h1>
+                                </div>
+                                <div className=" my-2 justify-between md:flex"> 
+                                    <h1 className="">
+                                        Email: {item.email}
+                                    </h1>
+                                </div>
+                                <div className=" my-2 justify-between md:flex"> 
+                                    <h1 className="">
+                                        Data: {new Date(item.data).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })}
                                     </h1>
                                 </div>
                                 <div className='bg-gray-100 w-full my-2 md:p-2 p-1 md:mr-0 rounded'>
