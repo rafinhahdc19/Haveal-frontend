@@ -105,7 +105,7 @@ const Perfil = () => {
                         </button>
                         <p className="text-black text-center">Log out</p>
                     </div>
-                    <AuthVerifyadmcomp routerFunction={() => routerFunc()}>
+                    <AuthVerifyadmcomp>
                             <div className="text-center md:mx-8 mx-6 my-4 ">
                                 
                                 <button onClick={() => Router.push("/perfil/compras/clientes/admpage/orders")} className=" ml-auto mr-auto bg-green-200 hover:bg-green-300  rounded-full text-green-600 ease-in-out duration-200 md:p-6 p-4 ">

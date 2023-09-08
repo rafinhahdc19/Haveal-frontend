@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Cookies from 'js-cookie';
 import axios from 'axios';
 
-const AuthVerifyadmcomp = ({ children, routerFunction }) => {
+const AuthVerifyadmcomp = ({ children }) => {
     const [isVerified, setIsVerified] = useState(false);
     const token = Cookies.get('jwt');
 
@@ -30,7 +30,6 @@ const AuthVerifyadmcomp = ({ children, routerFunction }) => {
             req(token);
         } else {
             setIsVerified(false);
-            routerFunction();
         }
     }, []);
     

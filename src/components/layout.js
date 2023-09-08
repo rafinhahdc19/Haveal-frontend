@@ -1,6 +1,13 @@
 import { Chicle } from 'next/font/google'
 import { Children } from 'react'
-import Head from 'next/head'
+import { createGlobalStyle } from 'styled-components';
+import Head from 'next/head';
+
+const GlobalStyle = createGlobalStyle`
+  body, h1, h2, h3, h4, h5, h6, p, span, div {
+    font-family: 'Poppins', sans-serif;
+  }
+`;
 
 export default function Layout({ children }) {
   return (
@@ -13,9 +20,10 @@ export default function Layout({ children }) {
         <title>Haveal</title>
         <meta
           name="description"
-          content="Indefined"
+          content="undefined"
         />
       </Head>
+      <GlobalStyle />
       {children}
       
     </>

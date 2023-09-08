@@ -23,14 +23,69 @@ import {
 import Link from 'next/link'
 import axios from 'axios'
 import Cookies from 'js-cookie'
+import Copylink from '@/components/copylink'
+import { useDisclosure } from '@chakra-ui/react'
+import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  AlertDialogCloseButton,
+} from '@chakra-ui/react'
+
 
 
 
 const Index = () => {
     const router = useRouter();
+    const [isDeleting, setIsDeleting] = useState(false);
     const { slug } = router.query;
     const [loading, setLoading] = useState(true);
     const token = Cookies.get("jwt")
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const cancelRef = React.useRef()
+    const [ codeFind, setCodeFind ] = useState('')
+
+    const addFindCode = async (e, token) => {
+      e.preventDefault()
+      console.log(token)
+      const responseforfindcode = await axios.put(
+        process.env.NEXT_PUBLIC_URL + "/order/rastreioupdate",
+        { slug: slug, codigo: codeFind }, // Aqui é o corpo da requisição
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      ).then(function (data){
+        Router.push('/perfil/compras?message='+encodeURIComponent("Código de rastreio adicionado"))
+      }).catch(function (error){
+        alert("não foi possivel adicionar código de rastreio")
+      })
+    }
+
+    const deleteorder = async (slug) => {
+      try {
+        const response = await axios.delete(process.env.NEXT_PUBLIC_URL+"/order/delete", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          data: { slug: slug } // Passando o slug como parte dos dados
+        });
+    
+        if (response) {
+          setIsDeleting(false)
+          Router.push("/perfil/compras");
+        }
+      } catch (error) {
+        setIsDeleting(false)
+        alert('Erro ao excluir pedido');
+      }
+    }
 
     const formatCurrency = (valueInCents) => {
     const valueInReal = valueInCents / 100; 
@@ -97,7 +152,7 @@ const Index = () => {
                             Status
                         </h1>
                         <div className=" my-2 justify-between md:flex"> 
-                            <h1 className="">
+                            <h1 className="text-xl">
                                 Status de pagamento: {itemToShow[0].status == "1" ? (
                                     <span className=" text-green-700 ">Pago</span>
                                 ):(
@@ -106,11 +161,54 @@ const Index = () => {
                             </h1>
                         </div>
                         <div className=" my-2 justify-between md:flex"> 
-                            <h1 className="">
-                                Status de compra: 
+                            <h1 className="text-xl">
+                            Status: {itemToShow[0].status == "0" ? (
+                                    <span className="text-red-700">Falhou</span>
+                                    ) : (
+                                      itemToShow[0].statusInterno == "1" ? (
+                                        <span className="text-green-700">Validado</span>
+                                    ) : itemToShow[0].statusInterno == "2" ? (
+                                        <span className="text-gray-700">Cancelado</span>
+                                    ) : (
+                                        <span className="text-yellow-700">Validando</span>
+                                    )
+                                    )} 
                             </h1>
                         </div>
                     </div>
+
+                      {itemToShow[0].rastreio != "" && itemToShow[0].rastreio ? (
+                        <div className="w-[100%] md:mr-auto md:ml-auto md:flex md:justify-center md:w-[40%] my-2 justify-between"> 
+                        <h1 className="w-full text-center md:justify-center md:mr-auto md:ml-auto ">
+                            <span className='text-center m-2 text-xl w-full'>Código de Rastreio:</span>
+                            <div className='text-left my-2'>             
+                              <Copylink textToCopy={itemToShow[0].rastreio}></Copylink>
+                            </div>
+                        </h1>
+                      </div>
+                      ):(
+                        <>
+                        <div className="w-[100%] md:mr-auto md:ml-auto md:flex md:justify-center md:w-[60%] my-2 justify-between"> 
+                          <h1 className="w-full text-center md:justify-center md:mr-auto md:ml-auto ">
+                              <span className='text-center m-2 text-xl w-full'>Adicionar código de Rastreio:</span>
+                              <div className='text-left my-2'>             
+                                <form onSubmit={(e) => addFindCode(e, token)} className='flex gap-2 w-full'>
+                                  <Input value={codeFind} onChange={(e) => setCodeFind(e.target.value) } placeholder='Código de rastreio'></Input>
+                                  <Button type='submit' colorScheme='blue'>Adicionar</Button>
+                                </form>
+                              </div>
+                          </h1>
+                        </div>
+                        </>
+                      )
+                    }
+                  <div className=" my-2 justify-between md:flex"> 
+                    <div className='bg-gray-100 rounded'>
+                      <div>
+                        
+                      </div>
+                    </div>
+                  </div>
                   
                   
                   <div className='md:py-4 md:pt-2'>
@@ -203,7 +301,41 @@ const Index = () => {
                 </div>
               </div>
             </div>
+            <div className='mr-auto'>
+                      
+                          <Button colorScheme='red' onClick={onOpen}>
+                            {isDeleting ? <Spinner color='red.100' /> : 'Deletar order'}
+                          </Button>
+
+                          <AlertDialog
+                            isOpen={isOpen}
+                            leastDestructiveRef={cancelRef}
+                            onClose={onClose}
+                          >
+                            <AlertDialogOverlay>
+                              <AlertDialogContent>
+                                <AlertDialogHeader textColor={"black"} fontSize='lg' fontWeight='bold'>
+                                  Deletar order
+                                </AlertDialogHeader>
+
+                                <AlertDialogBody textColor={"black"} >
+                                  Tem certeza que quer apagar?
+                                </AlertDialogBody>
+
+                                <AlertDialogFooter>
+                                  <Button ref={cancelRef} onClick={onClose}>
+                                    Cancel
+                                  </Button>
+                                  <Button colorScheme='red' onClick={() => { onClose(); deleteorder(itemToShow[0].slug); setIsDeleting(true); }} ml={3}>
+                                    Delete
+                                  </Button>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>
+                            </AlertDialogOverlay>
+                          </AlertDialog>
+                      </div>
           </div>
+          
         </main>
       ) : (
         <main className='md:mt-[9rem] lg:max-w-6xl drop-shadow-sm rounded mt-[7rem] ml-auto mr-auto'>

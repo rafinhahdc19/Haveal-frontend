@@ -181,7 +181,7 @@ const MyPaymentForm = () => {
             },
         }).then(function (data){
           setloading(false)
-          Router.push("/perfil")
+          Router.push("/perfil/compras?message="+encodeURIComponent("Compra efetuada"))
         }).catch(function (error){
           setloading(false)
           alert("o pagamento não pode ser verificado ou não foi efetuado, entre em contato se for preciso")
@@ -251,7 +251,7 @@ const MyPaymentForm = () => {
   };
   const resultadoFinal = calcularResultado();
   const routerFunc = () => {
-    Router.push('/login?page=buy')
+    Router.push('/login/compras?page=buy')
 }
   return (
     <>

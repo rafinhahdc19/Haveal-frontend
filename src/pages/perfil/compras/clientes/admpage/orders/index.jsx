@@ -70,7 +70,7 @@ const Perfil = () => {
           fetchData(offset, limit)
             .then((data) => {
             const datas = data.itemsS
-              if (datas.length > 0) {
+              if (datas && datas.length > 0) {
                 setnotfound(false)
                 const lastItems = items.slice(-datas.length);
                 const newItems = datas.slice();
@@ -89,7 +89,7 @@ const Perfil = () => {
                 setfim(true);
               }
       
-              if (datas.length < itemsPerPage) {
+              if (datas && datas.length < itemsPerPage) {
                 setfim(true);
               }
             });
@@ -168,7 +168,7 @@ const Perfil = () => {
                         </button>
                         <p className="text-black text-center">Log out</p>
                     </div>
-                    <AuthVerifyadmcomp routerFunction={() => routerFunc()}>
+                    <AuthVerifyadmcomp>
                             <div className="text-center md:mx-8 mx-6 my-4 ">
                                 
                                 <button onClick={() => Router.push("/perfil/compras/clientes/admpage/orders")} className=" ml-auto mr-auto bg-green-200 hover:bg-green-300  rounded-full text-green-600 ease-in-out duration-200 md:p-6 p-4 ">
@@ -219,11 +219,13 @@ const Perfil = () => {
                                     Status: {item.status == "0" ? (
                                     <span className="text-red-700">Falhou</span>
                                     ) : (
-                                    item.statusInterno == "1" ? (
-                                        <span className="text-green-700">Validado</span>
-                                    ) : (
-                                        <span className="text-yellow-700">Validando</span>
-                                    )
+                                        item.statusInterno == "1" ? (
+                                          <span className="text-green-700">Validado</span>
+                                      ) : item.statusInterno == "2" ? (
+                                          <span className="text-gray-700">Cancelado</span>
+                                      ) : (
+                                          <span className="text-yellow-700">Validando</span>
+                                      )
                                     )}
                                     </h1>
                                 </div>

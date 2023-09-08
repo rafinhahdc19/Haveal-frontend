@@ -54,7 +54,7 @@ export default function Home() {
   
       fetchData(offset, limit, search)
         .then((data) => {
-          if (data.length > 0) {
+          if (data && data.length > 0) {
             setnotfound(false)
             const lastItems = items.slice(-data.length);
             const newItems = data.slice();
@@ -83,7 +83,7 @@ export default function Home() {
             setfim(true);
           }
   
-          if (data.length < itemsPerPage) {
+          if (data && data.length < itemsPerPage) {
             setfim(true);
           }
         });
