@@ -73,7 +73,7 @@ const Perfil = () => {
                     </div>
                 </div>
                 <div className="flex w-auto  justify-center items-center " >
-                    <div className="overflow-auto flex">
+                    <div className="overflow-auto flex md:mr-0 mr-2">
                     <div className="text-center md:mx-8 mx-6 my-4 ">
                         
                         <button onClick={() => Router.push("/perfil/compras")} className=" ml-auto mr-auto bg-sky-100 hover:bg-sky-200  rounded-full text-blue-600 ease-in-out duration-200 md:p-6 p-4 ">
