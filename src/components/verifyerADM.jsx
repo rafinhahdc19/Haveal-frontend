@@ -40,4 +40,3 @@ const AuthVerifyadm = ({ children, routerFunction }) => {
 };
 
 export default AuthVerifyadm;
-export default AuthVerifyadm;
