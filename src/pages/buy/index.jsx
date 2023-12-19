@@ -251,7 +251,7 @@ const MyPaymentForm = () => {
   };
   const resultadoFinal = calcularResultado();
   const routerFunc = () => {
-    Router.push('/login/compras?page=buy')
+    Router.push('/login/?page=buy')
 }
   return (
     <>

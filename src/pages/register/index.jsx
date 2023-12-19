@@ -70,15 +70,15 @@ const Login = () => {
             
             seterrouser({msg: ""})
         }).catch(function (error) {
-            console.log(error.response)
+            console.log(error?.response)
             setloading(false)
-            if (error.response) {
+            if (error?.response) {
                 seterrouser({msg: error.response.data})
                 setsusse({msg: ""})
-            } else if (error.request) {
+            } else if (error?.request) {
                 seterrouser({msg: "erro na comunicação com o server, tente por outro metodo"})
                 setsusse({msg: ""})
-            } else if(error.response != undefined) {
+            } else if(error?.response != undefined) {
               seterrouser({msg: "erro na autenticacao, tente por outro metodo"})
               setsusse({msg: ""})
             }else{
